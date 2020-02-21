@@ -1,0 +1,151 @@
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.util.*;
+
+public class GBManager {
+	String fileName;
+	Scanner sc;
+	ArrayList<BookRank> priority = new ArrayList<BookRank>();
+	ArrayList<Library> libraries = new ArrayList<Library>();
+	private int totalBooks;
+	private int totalLibraries;
+	private int days;
+	
+
+	// ask user to choose text file
+	public void set_fileName() {
+		Scanner in = new Scanner(System.in);
+	    System.out.println("Enter a library set (.txt file): ");
+	    fileName = in.next();
+	}
+	
+	//gets the scanner ready
+	public void scan(String fileName) throws FileNotFoundException{
+		FileReader file;
+		try {
+			file= new FileReader(fileName);	
+			
+			}
+		catch(Exception e) {
+			throw new FileNotFoundException("File Not Found");
+			}
+		
+		sc = new Scanner(file);
+		
+	}
+	
+	// takes care of the first line 
+	public void firstLine() {
+		totalBooks= sc.nextInt();
+		totalLibraries=sc.nextInt();
+		days=sc.nextInt();
+	}
+	
+	//set the scores of each book in priority
+	public void setScore() {
+		for(int i=0;i<totalBooks;i++) {
+			int score= sc.nextInt();
+			priority.add(new BookRank(i, score));
+		}
+	}
+	//sorts priority in descending order
+	public void sortPriority() {
+		Collections.sort(priority, new Comparator<BookRank>()
+			{
+			public int compare(BookRank br1, BookRank br2) {
+				return Integer.valueOf(br2.score).compareTo(br1.score);
+			}
+			}); 
+		
+	}
+	
+	//initialize library
+	public Library makeLibrary() {
+		int numBooks= sc.nextInt();
+		int signUpDays= sc.nextInt();
+		int shipDays=sc.nextInt();
+		int[] books = new int[numBooks];
+		for(int i=0; i<numBooks;i++) { //every book goes into books[]
+			books[i]= sc.nextInt();
+		}
+		//SORT BOOKS BY SCORE
+		Library lib= new Library(numBooks, signUpDays, shipDays, books);
+		return lib;
+	}
+	
+	//add all lib to libraries
+	public void addLibraries() {
+		for(int i=0; i<totalLibraries;i++) {
+			libraries.add(makeLibrary());		
+		}
+	}
+	
+	//get max possible score of each lib
+	public int getTotalScore(Library lib) {
+		int tscore=0;
+		for(int i=0;i<lib.numBooks;i++) {
+			int name= lib.books[i];
+			for(int j=0; j<totalBooks;j++) {
+				if(priority.get(j).name==name) {
+					tscore+= priority.get(j).score;
+				}
+			}
+		}
+		return tscore;
+	}
+	
+	//get days spent of each lib
+	public int getDaySpent(Library lib) {
+		int daySpent=lib.signUpDays;
+		int numBook= lib.numBooks;
+		int shipDay= lib.shipDays;
+		while(daySpent<=days && numBook>0) {
+			numBook-=shipDay;
+			daySpent++;
+		}
+		return daySpent;
+	}
+	
+	public double getAveScore(Library lib) {
+		double aveScore= (double)getTotalScore(lib)/(double)getDaySpent(lib); 
+		return aveScore;
+	}
+	
+	//assign all ints to its appropriate variables
+	public void setUp()  {
+		firstLine();
+		setScore();
+		sortPriority();
+		addLibraries();
+	}
+	
+	//runs the program
+	public void run() throws FileNotFoundException {
+		set_fileName();
+		try {
+			scan(fileName);
+		}
+		catch(Exception e) {
+			throw new FileNotFoundException("File Not Found");
+		}
+		setUp();
+	}
+	
+	public static void main(String[] args) throws FileNotFoundException{
+		GBManager gbm= new GBManager();
+		gbm.set_fileName();
+		try {
+			gbm.scan(gbm.fileName);
+		}
+		catch(Exception e) {
+			throw new FileNotFoundException("File Not Found");
+		}
+		gbm.setUp();
+		
+		//System.out.println(numBooks);
+		//System.out.println(signUpDays);
+		//System.out.println(shipDays);
+	}
+
+}

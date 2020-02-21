@@ -1,0 +1,27 @@
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Scanner;
+
+public class Organize {
+	public String fileName;
+	public Scanner sc;
+	
+	
+	
+public static void main(String[] args) throws FileNotFoundException {
+		
+		FileReader file;
+		try {
+			file= new FileReader("a_example.txt");	
+			
+			}
+		catch(Exception e) {
+			throw new FileNotFoundException("File Not Found");
+			}
+		
+		Scanner sc = new Scanner(file);
+		int totalBooks;
+		int totalLibraries;
+		int days;
+}
+}

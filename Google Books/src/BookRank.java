@@ -7,9 +7,4 @@ public class BookRank {
     this.score=score;
   }
 
-  public int getScore() {
-    return this.score;
-  }
-
-  
 }

@@ -1,0 +1,20 @@
+import java.util.*;
+import java.io.*;
+
+public class GoogleBooks {
+	try {
+	File file= new File("C:\\Users\\ASUS\\Desktop\\Projects\\Google Hash Code\\Google Books\\a_example.txt");
+	Scanner stdin = new Scanner(file);
+	}
+	catch(Exception e) {
+		throw FileNotFoundException;
+	}
+	
+	 
+	 
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

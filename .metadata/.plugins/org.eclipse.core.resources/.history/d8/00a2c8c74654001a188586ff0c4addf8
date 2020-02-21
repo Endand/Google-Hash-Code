@@ -1,0 +1,30 @@
+public class Library{
+  public int numBooks;
+  public int signUpDays;
+  public int shipDays;
+  public int[] books;
+
+public Library(int numBooks, int signUpDays, int shipDays, int[] books){
+  this.numBooks=numBooks;
+  this.signUpDays=signUpDays;
+  this.shipDays=shipDays;
+  this.books=books;
+}
+
+public int getTotalScore(Library lib) {
+	int tscore=0;
+	for(int i=0;i<numBooks;i++) {
+		int name= books[i];
+		priority.get(name).score;
+	}
+	
+	return tscore;
+}
+
+public int getAveScore(Library lib) {
+	
+	
+	
+	return aveScore;
+}
+}

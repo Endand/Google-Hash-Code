@@ -1,0 +1,19 @@
+import java.util.*;
+import java.io.*;
+
+public class GoogleBooks {
+	
+	public static void main(String[] args) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		try {
+			FileReader file= new FileReader("a_example.txt");	
+			}
+		catch(Exception e) {
+			throw new FileNotFoundException("File Not Found");
+			}
+		
+		
+		 
+	}
+
+}
