@@ -77,12 +77,14 @@ public class GBManager {
 	public void sortBooks(int[] books) {
 		int i,j,keyIndex,key;
 		for(j=1;j<books.length;j++){
-			key=books[j];
-			key= getScore(key);
+			keyIndex=books[j];
+			key= getScore(keyIndex);
 			for(i=j-1; (i>=0)&&(getScore(books[i])<key);i--){
 				books[i+1]=books[i];
+				books[i]=keyIndex;
+				System.out.println();
 			}
-			books[i+1]=key;
+			books[i+1]=keyIndex;
 		}
 	}
 	
