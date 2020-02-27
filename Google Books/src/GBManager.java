@@ -82,7 +82,6 @@ public class GBManager {
 			for(i=j-1; (i>=0)&&(getScore(books[i])<key);i--){
 				books[i+1]=books[i];
 				books[i]=keyIndex;
-				System.out.println();
 			}
 			books[i+1]=keyIndex;
 		}
