@@ -157,7 +157,19 @@ public class GBManager {
 	
 	//sorts libraries by aveScore (to determine which to signup first)
 	public void sortLibraries() {
-		
+		System.out.println("Before Sort:");
+		libraries.forEach(library -> System.out.println(getAveScore(library)));
+
+		//Collections.sort function!
+		Collections.sort(libraries,new Comparator<Library>() {
+			@Override
+			public int compare(Library l1, Library l2) {
+				return Double.compare(getAveScore(l2),getAveScore(l1));
+			}
+		});
+
+		System.out.println("After Sort:");
+		libraries.forEach(library -> System.out.println(getAveScore(library)));
 	}
 	
 	/**

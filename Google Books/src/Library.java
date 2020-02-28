@@ -11,5 +11,11 @@ public Library(int numBooks, int signUpDays, int shipDays, int[] books){
   this.books=books;
 }
 
+@Override
+public String toString() {
+  // TODO Please fix method later
+  return numBooks + "";
+}
+
 
 }
