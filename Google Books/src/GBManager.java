@@ -68,11 +68,22 @@ public class GBManager {
 		
 	}
 	
+	
 	/**
-	 * methods: sortBooks, makeLibrary, addLibraries
+	 * methods: getScore, sortBooks, makeLibrary, addLibraries
 	 * purpose: to fill in libraries[]
 	 */
 	
+	//get score of the book searched
+	public int getScore(int name) {
+		int score=-1;
+		for(int i=0;i<priority.size();i++) {
+			if(priority.get(i).name==name) {
+				score=priority.get(i).score;
+			}
+		}
+		return score;
+	}
 	//sort books by score (to determine which book to ship out first)
 	public void sortBooks(int[] books) {
 		int i,j,keyIndex,key;
@@ -176,6 +187,4 @@ public class GBManager {
 		System.out.println("done");
 	}
 	
-	
-
 }
