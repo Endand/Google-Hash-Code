@@ -2,12 +2,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class GBManager {
 	String fileName;
 	Scanner sc;
 	ArrayList<BookRank> priority = new ArrayList<BookRank>();
 	ArrayList<Library> libraries = new ArrayList<Library>();
+	Set<Integer> uniqueBooks = new LinkedHashSet<Integer>();
 	private int totalBooks;
 	private int totalLibraries;
 	private int days;
@@ -99,23 +102,26 @@ public class GBManager {
 	}
 	
 	//initialize library
-	public Library makeLibrary() {
+	public Library makeLibrary(int id) {
 		int numBooks= sc.nextInt();
 		int signUpDays= sc.nextInt();
 		int shipDays=sc.nextInt();
 		int[] books = new int[numBooks];
 		for(int i=0; i<numBooks;i++) { //every book goes into books[]
 			books[i]= sc.nextInt();
-		}
-		sortBooks(books);
-		Library lib= new Library(numBooks, signUpDays, shipDays, books);
-		return lib;
+			}
+			sortBooks(books);
+			uniqueBooks.addAll(IntStream.of(books).boxed().collect(Collectors.toList()));
+
+			// TODO loop whole set to removing
+			Library lib= new Library(numBooks, signUpDays, shipDays, books, id);
+			return lib;
 	}
 	
 	//add all lib to libraries
 	public void addLibraries() {
 		for(int i=0; i<totalLibraries;i++) {
-			libraries.add(makeLibrary());		
+			libraries.add(makeLibrary(i));		
 		}
 	}
 	
@@ -157,8 +163,6 @@ public class GBManager {
 	
 	//sorts libraries by aveScore (to determine which to signup first)
 	public void sortLibraries() {
-		System.out.println("Before Sort:");
-		libraries.forEach(library -> System.out.println(getAveScore(library)));
 
 		//Collections.sort function!
 		Collections.sort(libraries,new Comparator<Library>() {
@@ -167,9 +171,30 @@ public class GBManager {
 				return Double.compare(getAveScore(l2),getAveScore(l1));
 			}
 		});
-
-		System.out.println("After Sort:");
-		libraries.forEach(library -> System.out.println(getAveScore(library)));
+		
+	}
+	
+	public void scan() {
+		int totalDays= days;
+		int libCount = 0;
+		for(int i=0; i<libraries.size() && totalDays>0;i++) {
+			System.out.println("Library "+ i + ":");
+			int[]books= libraries.get(i).books;
+			int bookCount=0;
+			libCount++;
+			for(int j=0;j<books.length;j++) {
+				if(!uniqueBooks.contains(books[j])) { //not seen yet
+					bookCount++;
+					System.out.print("Book: " + books[j] + " ");
+					uniqueBooks.add(books[j]);
+				}else {
+					continue;
+				}
+				
+			}
+			System.out.println("Lib name: "+ libraries.get(i).libraryID + " Book Count: " + bookCount + "\n");
+		}
+		System.out.println("Lib Count: "+ libCount);
 	}
 	
 	/**
@@ -184,6 +209,7 @@ public class GBManager {
 		sortPriority();
 		addLibraries();
 		sortLibraries();
+		scan();
 	}
 	
 	//runs the program
