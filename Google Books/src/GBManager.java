@@ -111,9 +111,6 @@ public class GBManager {
 			books[i]= sc.nextInt();
 			}
 			sortBooks(books);
-			uniqueBooks.addAll(IntStream.of(books).boxed().collect(Collectors.toList()));
-
-			// TODO loop whole set to removing
 			Library lib= new Library(numBooks, signUpDays, shipDays, books, id);
 			return lib;
 	}
@@ -164,36 +161,40 @@ public class GBManager {
 	//sorts libraries by aveScore (to determine which to signup first)
 	public void sortLibraries() {
 
-		//Collections.sort function!
 		Collections.sort(libraries,new Comparator<Library>() {
 			@Override
 			public int compare(Library l1, Library l2) {
 				return Double.compare(getAveScore(l2),getAveScore(l1));
 			}
 		});
-		
 	}
 	
 	public void scan() {
 		int totalDays= days;
 		int libCount = 0;
+		int noLib=0;
 		for(int i=0; i<libraries.size() && totalDays>0;i++) {
-			System.out.println("Library "+ i + ":");
 			int[]books= libraries.get(i).books;
 			int bookCount=0;
 			libCount++;
 			for(int j=0;j<books.length;j++) {
 				if(!uniqueBooks.contains(books[j])) { //not seen yet
 					bookCount++;
-					System.out.print("Book: " + books[j] + " ");
+					System.out.print(books[j] + " ");
 					uniqueBooks.add(books[j]);
 				}else {
 					continue;
 				}
 				
 			}
-			System.out.println("Lib name: "+ libraries.get(i).libraryID + " Book Count: " + bookCount + "\n");
+			if(bookCount>0) {
+			System.out.println();
+			System.out.println(libraries.get(i).libraryID + " " + bookCount);}
+			else {
+				noLib++;
+			}
 		}
+		libCount-=noLib;
 		System.out.println("Lib Count: "+ libCount);
 	}
 	
@@ -209,7 +210,7 @@ public class GBManager {
 		sortPriority();
 		addLibraries();
 		sortLibraries();
-		scan();
+		
 	}
 	
 	//runs the program
@@ -222,7 +223,7 @@ public class GBManager {
 			throw new FileNotFoundException("File Not Found");
 		}
 		setUp();
-		System.out.println("done");
+		scan();
 	}
 	
 }
